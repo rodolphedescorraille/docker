@@ -1,0 +1,39 @@
+version: "3.6"
+services:
+  mariadb:
+    image: mariadb
+    container_name: c_est_bien_moi_qui_l_ai_fait
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=superDatabase
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environement:
+      - PMA_HOST=db
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+    ports:
+      - 8080:80
+    depends_on:
+      - mariadb
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - 1025:1025
+      - 8025:8025
+    depends_on:
+      - mariadb
+  runweb:
+    build: .
+    ports:
+      -8000:80
+    volumes:
+      - ./rodolphetest:/var/www/html
+    depends_on:
+      - mariadb
+
+
+
+
+
+
